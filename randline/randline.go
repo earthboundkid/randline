@@ -62,10 +62,14 @@ func NewPicker(rc io.ReadCloser) (*Picker, error) {
 	return &p, exitcode.Set(sc.Err(), 3)
 }
 
+func (p *Picker) Pick() string {
+	n := p.r.Intn(len(p.ss))
+	return p.ss[n]
+}
+
 func (p *Picker) Output(w io.Writer, cnt int) error {
 	for i := 0; i < cnt; i++ {
-		n := p.r.Intn(len(p.ss))
-		s := p.ss[n]
+		s := p.Pick()
 		if _, err := fmt.Fprintln(w, s); err != nil {
 			return err
 		}
