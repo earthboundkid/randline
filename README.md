@@ -27,6 +27,15 @@ Options:
   -src value
         source file or URL (default stdin)
 
+$ cat lunch.txt
+Chinese
+Thai
+Indian
+Italian
+
+$ randline -src lunch.txt
+Chinese
+
 $ randline -lines 10 -src /usr/share/dict/words
 preponderant
 overpublic
