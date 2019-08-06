@@ -26,6 +26,8 @@ Options:
         number of lines to show (<1 for same as input) (default 1)
   -replace
         allow the same line to appear more than once
+  -split-words
+        split on words rather than lines
   -src value
         source file or URL (default stdin)
 
@@ -35,7 +37,7 @@ Thai
 Indian
 Italian
 
-$ randline -src lunch.txt
+$ cat lunch.txt | randline
 Chinese
 
 $ randline -lines 0 -src lunch.txt

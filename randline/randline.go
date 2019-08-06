@@ -17,6 +17,7 @@ func CLI(args []string) error {
 	fl := flag.NewFlagSet("randline", flag.ContinueOnError)
 	cnt := fl.Int("lines", 1, "number of lines to show (<1 for same as input)")
 	replace := fl.Bool("replace", false, "allow the same line to appear more than once")
+	byWord := fl.Bool("split-words", false, "split on words rather than lines")
 	src := flagext.FileOrURL(flagext.StdIO, nil)
 	fl.Var(src, "src", "source file or URL")
 	fl.Usage = func() {
@@ -34,7 +35,7 @@ Options:
 		return err
 	}
 
-	p, err := NewPicker(src, *replace)
+	p, err := NewPicker(src, *byWord, *replace)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Load error: %v\n", err)
 		return err
@@ -51,7 +52,7 @@ type Picker struct {
 	replace bool
 }
 
-func NewPicker(rc io.ReadCloser, replace bool) (*Picker, error) {
+func NewPicker(rc io.ReadCloser, byWord, replace bool) (*Picker, error) {
 	p := Picker{
 		r:       *rand.New(rand.NewSource(time.Now().UnixNano())),
 		replace: replace,
@@ -59,6 +60,10 @@ func NewPicker(rc io.ReadCloser, replace bool) (*Picker, error) {
 
 	sc := bufio.NewScanner(rc)
 	defer rc.Close()
+
+	if byWord {
+		sc.Split(bufio.ScanWords)
+	}
 
 	for sc.Scan() {
 		p.ss = append(p.ss, sc.Text())
