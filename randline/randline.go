@@ -15,7 +15,8 @@ import (
 
 func CLI(args []string) error {
 	fl := flag.NewFlagSet("randline", flag.ContinueOnError)
-	cnt := fl.Int("lines", 1, "number of lines to show")
+	cnt := fl.Int("lines", 1, "number of lines to show (<1 for same as input)")
+	replace := fl.Bool("replace", false, "allow the same line to appear more than once")
 	src := flagext.FileOrURL(flagext.StdIO, nil)
 	fl.Var(src, "src", "source file or URL")
 	fl.Usage = func() {
@@ -33,7 +34,7 @@ Options:
 		return err
 	}
 
-	p, err := NewPicker(src)
+	p, err := NewPicker(src, *replace)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Load error: %v\n", err)
 		return err
@@ -45,13 +46,16 @@ Options:
 }
 
 type Picker struct {
-	ss []string
-	r  rand.Rand
+	ss      []string
+	r       rand.Rand
+	replace bool
 }
 
-func NewPicker(rc io.ReadCloser) (*Picker, error) {
-	var p Picker
-	p.r = *rand.New(rand.NewSource(time.Now().UnixNano()))
+func NewPicker(rc io.ReadCloser, replace bool) (*Picker, error) {
+	p := Picker{
+		r:       *rand.New(rand.NewSource(time.Now().UnixNano())),
+		replace: replace,
+	}
 
 	sc := bufio.NewScanner(rc)
 	defer rc.Close()
@@ -63,11 +67,24 @@ func NewPicker(rc io.ReadCloser) (*Picker, error) {
 }
 
 func (p *Picker) Pick() string {
+	if len(p.ss) == 0 {
+		return ""
+	}
+
 	n := p.r.Intn(len(p.ss))
+	if !p.replace {
+		p.ss[0], p.ss[n] = p.ss[n], p.ss[0]
+		r := p.ss[0]
+		p.ss = p.ss[1:]
+		return r
+	}
 	return p.ss[n]
 }
 
 func (p *Picker) Output(w io.Writer, cnt int) error {
+	if cnt < 1 {
+		cnt = len(p.ss)
+	}
 	for i := 0; i < cnt; i++ {
 		s := p.Pick()
 		if _, err := fmt.Fprintln(w, s); err != nil {

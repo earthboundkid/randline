@@ -23,7 +23,9 @@ Usage:
 
 Options:
   -lines int
-        number of lines to show (default 1)
+        number of lines to show (<1 for same as input) (default 1)
+  -replace
+        allow the same line to appear more than once
   -src value
         source file or URL (default stdin)
 
@@ -35,6 +37,19 @@ Italian
 
 $ randline -src lunch.txt
 Chinese
+
+$ randline -lines 0 -src lunch.txt
+Indian
+Chinese
+Thai
+Italian
+
+$ randline -lines 5 -replace -src lunch.txt
+Thai
+Chinese
+Indian
+Chinese
+Thai
 
 $ randline -lines 10 -src /usr/share/dict/words
 preponderant
