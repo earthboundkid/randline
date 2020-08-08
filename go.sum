@@ -1,6 +1,4 @@
-github.com/carlmjohnson/exitcode v0.0.2 h1:JVKc/p+ReaL/4J/EYKxX8dBtpnY1xn6V0FnIuFtlqgw=
-github.com/carlmjohnson/exitcode v0.0.2/go.mod h1:WPQ6eZJg+s0qVgGDoPEAt8ONPl6dJGPG8ft/E8NUiMw=
+github.com/carlmjohnson/exitcode v0.0.4 h1:C5c0GBs/1iuo5cKIHBHdBQVENeAmgPZcyXtqBKCe5i0=
+github.com/carlmjohnson/exitcode v0.0.4/go.mod h1:MZ6ThCDx517DQcrpYnnns1pLh8onjFl+B/AsrOrdmpc=
 github.com/carlmjohnson/flagext v0.0.4 h1:hNn1ZgoD+kUnKPJGXZv3oPfYwWUnZjzeie+bQ+nh+5A=
 github.com/carlmjohnson/flagext v0.0.4/go.mod h1:dg/yd3ze75o3frOmgsPvEG3UnH0pEzdAOx62p6TTuYc=
-golang.org/x/xerrors v0.0.0-20190513163551-3ee3066db522 h1:bhOzK9QyoD0ogCnFro1m2mz41+Ib0oOhfJnBp5MR4K4=
-golang.org/x/xerrors v0.0.0-20190513163551-3ee3066db522/go.mod h1:I/5z698sn9Ka8TeJc9MKroUUfqBBauWjQqLJ2OPfmY0=
